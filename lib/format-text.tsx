@@ -22,16 +22,20 @@ export function formatTextWithLinks(text: string): React.ReactNode[] {
     const url = match[0]
     const href = url.startsWith("www.") ? `https://${url}` : url
 
-    // Add the link
+    // Truncate display URL if it's too long
+    const displayUrl = url.length > 50 ? url.substring(0, 47) + "..." : url
+
+    // Add the link with proper styling for overflow
     result.push(
       <a
         key={`link-${match.index}`}
         href={href}
         target="_blank"
         rel="noopener noreferrer"
-        className="text-blue-600 hover:underline"
+        className="text-blue-600 hover:underline break-all"
+        title={url} // Show full URL on hover
       >
-        {url}
+        {displayUrl}
       </a>,
     )
 

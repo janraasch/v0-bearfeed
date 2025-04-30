@@ -241,7 +241,7 @@ export default function PostList({
             )}
           </div>
 
-          <div className="mb-4 whitespace-pre-wrap">{formatTextWithLinks(post.content)}</div>
+          <div className="mb-4 whitespace-pre-wrap break-words">{formatTextWithLinks(post.content)}</div>
 
           {post.post_images && post.post_images.length > 0 && (
             <div className="mb-4 flex flex-wrap gap-2">
@@ -315,7 +315,7 @@ export default function PostList({
                       {formatDistanceToNow(new Date(comment.created_at), { addSuffix: true })}
                     </span>
                   </div>
-                  <div>{formatTextWithLinks(comment.content)}</div>
+                  <div className="break-words">{formatTextWithLinks(comment.content)}</div>
                 </div>
               ))}
             </div>
