@@ -190,7 +190,7 @@ export default function PostList({
     await supabase.from("comments").insert({
       post_id: postId,
       user_id: currentUser.id,
-      content: newComment[postId]
+      content: newComment[postId],
     })
 
     setNewComment({ ...newComment, [postId]: "" })
@@ -225,12 +225,20 @@ export default function PostList({
   return (
     <div>
       {postsWithSignedUrls.map((post) => (
-        <article key={post.id} className="post">
-          <div className="mb-2">
+        <article
+          key={post.id}
+          className={`post ${post.content.includes("Nur Bear Feed") ? "border-b-2 border-rose-200" : ""}`}
+        >
+          <div className="mb-2 flex items-center flex-wrap gap-x-2">
             <span className="font-medium">{post.users.display_name || post.users.username}</span>
-            <span className="text-gray-500 text-sm ml-2">
+            <span className="text-gray-500 text-sm">
               {formatDistanceToNow(new Date(post.created_at), { addSuffix: true })}
             </span>
+            {post.content.includes("Nur Bear Feed") && (
+              <span className="bg-rose-100 text-rose-700 text-xs font-medium px-2 py-0.5 rounded-full ml-1">
+                ʕ •ᴥ~ʔ ♥ Honey of a Post
+              </span>
+            )}
           </div>
 
           <div className="mb-4 whitespace-pre-wrap">{formatTextWithLinks(post.content)}</div>
