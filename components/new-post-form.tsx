@@ -79,9 +79,6 @@ export default function NewPostForm({ onPostCreated }: NewPostFormProps) {
 
           if (uploadError) throw uploadError
 
-          // Get the public URL
-          const { data: publicUrlData } = supabase.storage.from("post-images").getPublicUrl(filePath)
-
           // Insert the image record
           const { data: imageData, error: imageError } = await supabase
             .from("post_images")
@@ -97,10 +94,7 @@ export default function NewPostForm({ onPostCreated }: NewPostFormProps) {
 
           if (imageError) throw imageError
 
-          uploadedImages.push({
-            ...imageData,
-            signedUrl: publicUrlData.publicUrl,
-          })
+          uploadedImages.push(imageData)
 
           // Update progress
           uploadedCount++
@@ -160,7 +154,7 @@ export default function NewPostForm({ onPostCreated }: NewPostFormProps) {
       )}
 
       <div className="mt-4">
-        <button type="submit" className="button button-primary w-24" disabled={isSubmitting || !content.trim()}>
+        <button type="submit" className="button button-primary px-8" disabled={isSubmitting || !content.trim()}>
           {isSubmitting ? "•••" : "Post"}
         </button>
       </div>

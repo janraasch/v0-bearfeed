@@ -101,6 +101,32 @@ export interface Database {
           created_at?: string
         }
       }
+      post_images: {
+        Row: {
+          id: string
+          post_id: string
+          storage_path: string
+          file_name: string
+          content_type: string
+          display_order: number
+        }
+        Insert: {
+          id?: string
+          post_id: string
+          storage_path: string
+          file_name: string
+          content_type: string
+          display_order: number
+        }
+        Update: {
+          id?: string
+          post_id?: string
+          storage_path?: string
+          file_name?: string
+          content_type?: string
+          display_order?: number
+        }
+      }
     }
     Views: {
       [_ in never]: never
