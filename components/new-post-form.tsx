@@ -2,7 +2,7 @@
 
 import type React from "react"
 
-import { useState } from "react"
+import { useState, useCallback } from "react"
 import { useSupabase } from "@/lib/supabase-provider"
 import ImageUpload from "./image-upload"
 import { v4 as uuidv4 } from "uuid"
@@ -19,9 +19,9 @@ export default function NewPostForm({ onPostCreated }: NewPostFormProps) {
   const [resetImageKey, setResetImageKey] = useState(0) // Add a key to reset the image upload component
   const { supabase, user } = useSupabase()
 
-  const handleImagesSelected = (files: File[]) => {
+  const handleImagesSelected = useCallback((files: File[]) => {
     setSelectedFiles(files)
-  }
+  }, [])
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -145,7 +145,9 @@ export default function NewPostForm({ onPostCreated }: NewPostFormProps) {
         />
       </div>
 
-      <ImageUpload onImagesSelected={handleImagesSelected} disabled={isSubmitting} resetKey={resetImageKey} />
+      <div className="mt-4">
+        <ImageUpload onImagesSelected={handleImagesSelected} disabled={isSubmitting} resetKey={resetImageKey} />
+      </div>
 
       {uploadProgress > 0 && uploadProgress < 100 && (
         <div className="mt-2">
@@ -156,9 +158,11 @@ export default function NewPostForm({ onPostCreated }: NewPostFormProps) {
         </div>
       )}
 
-      <button type="submit" className="button button-primary mt-4 w-32" disabled={isSubmitting || !content.trim()}>
-        {isSubmitting ? "•••" : "Post"}
-      </button>
+      <div className="mt-4">
+        <button type="submit" className="button button-primary w-24" disabled={isSubmitting || !content.trim()}>
+          {isSubmitting ? "•••" : "Post"}
+        </button>
+      </div>
     </form>
   )
 }

@@ -20,6 +20,7 @@ interface ImageUploadProps {
 export default function ImageUpload({ onImagesSelected, disabled = false, resetKey = 0 }: ImageUploadProps) {
   const [selectedImages, setSelectedImages] = useState<ImageFile[]>([])
   const fileInputRef = useRef<HTMLInputElement>(null)
+  const previousFilesRef = useRef<File[]>([])
 
   // Reset selected images when resetKey changes
   useEffect(() => {
@@ -32,11 +33,23 @@ export default function ImageUpload({ onImagesSelected, disabled = false, resetK
     }
   }, [resetKey])
 
+  // Use useEffect to notify parent component when selectedImages changes
+  useEffect(() => {
+    const files = selectedImages.map((img) => img.file)
+
+    // Compare current files with previous files to avoid unnecessary updates
+    const previousFiles = previousFilesRef.current
+    if (files.length !== previousFiles.length || files.some((file, i) => file !== previousFiles[i])) {
+      // Only update if files have actually changed
+      onImagesSelected(files)
+      previousFilesRef.current = files
+    }
+  }, [selectedImages])
+
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (!e.target.files || e.target.files.length === 0) return
 
     const newFiles: ImageFile[] = []
-    const filesToUpload: File[] = []
 
     Array.from(e.target.files).forEach((file) => {
       if (!file.type.startsWith("image/")) return
@@ -47,16 +60,10 @@ export default function ImageUpload({ onImagesSelected, disabled = false, resetK
         preview: URL.createObjectURL(file),
         id,
       })
-      filesToUpload.push(file)
     })
 
     // Create a new array instead of modifying the existing one
-    const updatedImages = [...selectedImages, ...newFiles]
-    setSelectedImages(updatedImages)
-
-    // Pass ALL files to the parent component, not just the new ones
-    const allFiles = updatedImages.map((img) => img.file)
-    onImagesSelected(allFiles)
+    setSelectedImages((prev) => [...prev, ...newFiles])
 
     // Reset the input so the same file can be selected again
     if (fileInputRef.current) {
@@ -70,13 +77,7 @@ export default function ImageUpload({ onImagesSelected, disabled = false, resetK
       if (imageToRemove) {
         URL.revokeObjectURL(imageToRemove.preview)
       }
-      const updatedImages = prev.filter((img) => img.id !== id)
-
-      // Notify parent component about the change with ALL remaining files
-      const remainingFiles = updatedImages.map((img) => img.file)
-      onImagesSelected(remainingFiles)
-
-      return updatedImages
+      return prev.filter((img) => img.id !== id)
     })
   }
 

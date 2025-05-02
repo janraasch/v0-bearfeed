@@ -1,7 +1,7 @@
 import { createServerSupabaseClient } from "@/lib/supabase-server"
 import AuthHeader from "@/components/auth-header"
 import Link from "next/link"
-import HomeClient from "./home-client"
+import HomeClient from "@/components/home-client"
 
 export default async function Home() {
   const supabase = createServerSupabaseClient()
