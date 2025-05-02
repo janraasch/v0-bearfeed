@@ -2,15 +2,7 @@
 
 import { useState, useEffect } from "react"
 import Image from "next/image"
-
-type PostImage = {
-  id: string
-  storage_path: string
-  file_name: string
-  content_type: string
-  display_order: number
-  signedUrl?: string
-}
+import type { PostImage } from "@/types/post"
 
 interface ImageGalleryProps {
   images: PostImage[]
@@ -80,7 +72,7 @@ export default function ImageGallery({ images, initialIndex, onClose }: ImageGal
         <div className="relative max-w-full max-h-full">
           <div className="relative" style={{ maxHeight: "calc(100vh - 100px)", width: "auto" }}>
             <Image
-              src={currentImage.signedUrl}
+              src={currentImage.signedUrl || "/placeholder.svg"}
               alt={currentImage.file_name || "Full size image"}
               placeholder="blur"
               blurDataURL="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+P+/HgAEtAJJXIDTjwAAAABJRU5ErkJggg=="

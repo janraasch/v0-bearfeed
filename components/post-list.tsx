@@ -7,56 +7,14 @@ import type { User } from "@supabase/auth-helpers-nextjs"
 import Image from "next/image"
 import ImageGallery from "./image-gallery"
 import { formatTextWithLinks } from "@/lib/format-text"
-
-type PostImage = {
-  id: string
-  storage_path: string
-  file_name: string
-  content_type: string
-  display_order: number
-  signedUrl?: string
-}
-
-type Like = {
-  id: string
-  user_id: string
-  users: {
-    id: string
-    username: string
-    display_name: string | null
-  }
-}
-
-type PostProps = {
-  id: string
-  content: string
-  created_at: string
-  updated_at: string
-  users: {
-    id: string
-    username: string
-    display_name: string | null
-  }
-  comments: Array<{
-    id: string
-    content: string
-    created_at: string
-    users: {
-      id: string
-      username: string
-      display_name: string | null
-    }
-  }>
-  likes: Like[]
-  post_images?: PostImage[]
-}
+import type { PostProps, PostImage } from "@/types/post"
 
 export default function PostList({
   posts,
   currentUser,
 }: {
   posts: PostProps[]
-  currentUser: User // Removed null from the type since currentUser will always be defined
+  currentUser: User
 }) {
   const { supabase } = useSupabase()
   const [newComment, setNewComment] = useState<Record<string, string>>({})
@@ -348,7 +306,6 @@ export default function PostList({
             </div>
           )}
 
-          {/* Removed the currentUser check since it will always be defined */}
           <div className="flex gap-2">
             <input
               type="text"

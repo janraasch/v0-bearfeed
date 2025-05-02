@@ -2,6 +2,7 @@ import { createServerSupabaseClient } from "@/lib/supabase-server"
 import AuthHeader from "@/components/auth-header"
 import Link from "next/link"
 import HomeClient from "@/components/home-client"
+import type { PostProps } from "@/types/post"
 
 export default async function Home() {
   const supabase = createServerSupabaseClient()
@@ -11,7 +12,7 @@ export default async function Home() {
 
   // Only try to get the user if we have a session
   let user = null
-  let posts = []
+  let posts: PostProps[] = []
 
   if (sessionData?.session) {
     // Get authenticated user

@@ -5,8 +5,7 @@ import PostList from "@/components/post-list"
 import NewPostForm from "@/components/new-post-form"
 import RetentionNotice from "@/components/retention-notice"
 import type { User } from "@supabase/auth-helpers-nextjs"
-
-type PostProps = any // Using any for simplicity, but ideally should match the PostProps type from post-list.tsx
+import type { PostProps } from "@/types/post"
 
 interface HomeClientProps {
   initialPosts: PostProps[]

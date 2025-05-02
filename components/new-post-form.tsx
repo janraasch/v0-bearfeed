@@ -6,9 +6,10 @@ import { useState, useCallback } from "react"
 import { useSupabase } from "@/lib/supabase-provider"
 import ImageUpload from "./image-upload"
 import { v4 as uuidv4 } from "uuid"
+import type { PostProps } from "@/types/post"
 
 interface NewPostFormProps {
-  onPostCreated?: (newPost: any) => void
+  onPostCreated?: (newPost: PostProps) => void
 }
 
 export default function NewPostForm({ onPostCreated }: NewPostFormProps) {
