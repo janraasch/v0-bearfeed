@@ -60,18 +60,18 @@ export default async function Home() {
         <HomeClient initialPosts={posts} currentUser={user} />
       ) : (
         // Content for unauthenticated users
-        <div className="text-center py-12">
-          <h2 className="text-2xl mb-4">Welcome to ʕ •ᴥ• ʔ Bear Feed</h2>
+        <div>
+          <h2 className="text-2xl font-medium mb-4">Welcome to ʕ •ᴥ• ʔ Bear Feed</h2>
           <p className="mb-6">A minimalist social feed inspired by Bear Blog.</p>
-          <p className="mb-8">
-            <Link href="/login" className="button button-primary mr-4">
+          <div className="mb-8">
+            <Link href="/login" className="button button-primary mr-4 px-8">
               Login
             </Link>
-            <Link href="/register" className="button">
+            <Link href="/register" className="button px-8">
               Register
             </Link>
-          </p>
-          <div className="max-w-md mx-auto text-sm text-gray-600">
+          </div>
+          <div className="max-w-md text-sm text-gray-600">
             <p>
               Bear Feed is a simple, content-focused social platform where you can share thoughts and connect with
               friends.

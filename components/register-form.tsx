@@ -60,12 +60,11 @@ export default function RegisterForm() {
       }
 
       router.push("/")
-      router.refresh()
     }
   }
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-4">
+    <form onSubmit={handleSubmit} className="space-y-4 max-w-md">
       {error && <div className="p-3 bg-red-50 text-red-700 rounded">{error}</div>}
 
       <div className="form-group">
@@ -123,11 +122,13 @@ export default function RegisterForm() {
         />
       </div>
 
-      <button type="submit" className="button button-primary w-full" disabled={isLoading}>
-        {isLoading ? "Registering..." : "Register"}
-      </button>
+      <div>
+        <button type="submit" className="button button-primary px-8" disabled={isLoading}>
+          {isLoading ? "Registering..." : "Register"}
+        </button>
+      </div>
 
-      <p className="text-center text-sm">
+      <p className="text-sm">
         Already have an account? <Link href="/login">Login</Link>
       </p>
     </form>

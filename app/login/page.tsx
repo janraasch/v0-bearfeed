@@ -5,8 +5,8 @@ export default function LoginPage() {
   return (
     <main>
       <Header />
-      <div className="max-w-md mx-auto">
-        <h2>Login</h2>
+      <div>
+        <h2 className="text-xl font-medium mb-4">Login</h2>
         <LoginForm />
       </div>
     </main>

@@ -5,8 +5,8 @@ export default function RegisterPage() {
   return (
     <main>
       <Header />
-      <div className="max-w-md mx-auto">
-        <h2>Register</h2>
+      <div>
+        <h2 className="text-xl font-medium mb-4">Register</h2>
         <RegisterForm />
       </div>
     </main>
