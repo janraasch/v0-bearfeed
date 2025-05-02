@@ -56,7 +56,7 @@ export default function PostList({
   currentUser,
 }: {
   posts: PostProps[]
-  currentUser: User | null
+  currentUser: User // Removed null from the type since currentUser will always be defined
 }) {
   const { supabase } = useSupabase()
   const [newComment, setNewComment] = useState<Record<string, string>>({})
@@ -103,8 +103,6 @@ export default function PostList({
 
   // Check which posts the current user has liked
   useEffect(() => {
-    if (!currentUser) return
-
     // Process likes data from the posts to determine which ones the current user has liked
     const likes: Record<string, boolean> = {}
 
@@ -118,8 +116,6 @@ export default function PostList({
   }, [posts, currentUser])
 
   const handleLike = async (postId: string) => {
-    if (!currentUser) return
-
     // Set processing state for this post
     setIsProcessingLike({ ...isProcessingLike, [postId]: true })
 
@@ -189,7 +185,7 @@ export default function PostList({
   }
 
   const handleCommentSubmit = async (postId: string) => {
-    if (!currentUser || !newComment[postId]) return
+    if (!newComment[postId]) return
 
     // Set the submitting state for this specific post
     setIsSubmittingComment({ ...isSubmittingComment, [postId]: true })
@@ -352,28 +348,27 @@ export default function PostList({
             </div>
           )}
 
-          {currentUser && (
-            <div className="flex gap-2">
-              <input
-                type="text"
-                value={newComment[post.id] || ""}
-                onChange={(e) => setNewComment({ ...newComment, [post.id]: e.target.value })}
-                placeholder="Write a comment..."
-                className="form-input"
-                disabled={isSubmittingComment[post.id]}
-              />
-              <button
-                onClick={() => handleCommentSubmit(post.id)}
-                className="button w-24"
-                disabled={!newComment[post.id] || isSubmittingComment[post.id]}
-              >
-                {isSubmittingComment[post.id] ? "•••" : "Comment"}
-              </button>
-              <button onClick={() => handleLike(post.id)} className="button w-24" disabled={isProcessingLike[post.id]}>
-                {isProcessingLike[post.id] ? "•••" : userLikes[post.id] ? "Unlike" : "Like"}
-              </button>
-            </div>
-          )}
+          {/* Removed the currentUser check since it will always be defined */}
+          <div className="flex gap-2">
+            <input
+              type="text"
+              value={newComment[post.id] || ""}
+              onChange={(e) => setNewComment({ ...newComment, [post.id]: e.target.value })}
+              placeholder="Write a comment..."
+              className="form-input"
+              disabled={isSubmittingComment[post.id]}
+            />
+            <button
+              onClick={() => handleCommentSubmit(post.id)}
+              className="button w-24"
+              disabled={!newComment[post.id] || isSubmittingComment[post.id]}
+            >
+              {isSubmittingComment[post.id] ? "•••" : "Comment"}
+            </button>
+            <button onClick={() => handleLike(post.id)} className="button w-24" disabled={isProcessingLike[post.id]}>
+              {isProcessingLike[post.id] ? "•••" : userLikes[post.id] ? "Unlike" : "Like"}
+            </button>
+          </div>
         </article>
       ))}
 
