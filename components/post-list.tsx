@@ -17,10 +17,21 @@ type PostImage = {
   signedUrl?: string
 }
 
+type Like = {
+  id: string
+  user_id: string
+  users: {
+    id: string
+    username: string
+    display_name: string | null
+  }
+}
+
 type PostProps = {
   id: string
   content: string
   created_at: string
+  updated_at: string
   users: {
     id: string
     username: string
@@ -36,20 +47,10 @@ type PostProps = {
       display_name: string | null
     }
   }>
-  likes: Array<{ count: number }>
+  likes: Like[]
   post_images?: PostImage[]
 }
 
-// Add a new type for the like information
-type LikeInfo = {
-  postId: string
-  users: Array<{
-    username: string
-    display_name: string | null
-  }>
-}
-
-// Update the component to include state for like info
 export default function PostList({
   posts,
   currentUser,
@@ -63,7 +64,6 @@ export default function PostList({
   const [selectedPostImages, setSelectedPostImages] = useState<PostImage[]>([])
   const [postsWithSignedUrls, setPostsWithSignedUrls] = useState<PostProps[]>([])
   const [userLikes, setUserLikes] = useState<Record<string, boolean>>({})
-  const [likeInfo, setLikeInfo] = useState<Record<string, LikeInfo["users"]>>({})
   const [showLikeTooltip, setShowLikeTooltip] = useState<string | null>(null)
 
   useEffect(() => {
@@ -101,64 +101,19 @@ export default function PostList({
 
   // Check which posts the current user has liked
   useEffect(() => {
-    const checkUserLikes = async () => {
-      if (!currentUser) return
+    if (!currentUser) return
 
-      const likes: Record<string, boolean> = {}
+    // Process likes data from the posts to determine which ones the current user has liked
+    const likes: Record<string, boolean> = {}
 
-      // Check each post to see if the user has liked it
-      await Promise.all(
-        posts.map(async (post) => {
-          const { data } = await supabase
-            .from("likes")
-            .select("*")
-            .eq("post_id", post.id)
-            .eq("user_id", currentUser.id)
-            .maybeSingle() // Changed from .single() to .maybeSingle()
+    posts.forEach((post) => {
+      // Check if any of the likes belong to the current user
+      const userLiked = post.likes.some((like) => like.user_id === currentUser.id)
+      likes[post.id] = userLiked
+    })
 
-          likes[post.id] = !!data
-        }),
-      )
-
-      setUserLikes(likes)
-    }
-
-    checkUserLikes()
-  }, [posts, currentUser, supabase])
-
-  // Add a new useEffect to fetch the users who liked each post
-  useEffect(() => {
-    const fetchLikeInfo = async () => {
-      const likeData: Record<string, LikeInfo["users"]> = {}
-
-      await Promise.all(
-        posts.map(async (post) => {
-          const { data } = await supabase
-            .from("likes")
-            .select(`
-            user_id,
-            users (
-              username,
-              display_name
-            )
-          `)
-            .eq("post_id", post.id)
-
-          if (data && data.length > 0) {
-            likeData[post.id] = data.map((like) => like.users)
-          } else {
-            likeData[post.id] = []
-          }
-        }),
-      )
-
-      setLikeInfo(likeData)
-    }
-
-    if (posts.length > 0) {
-      fetchLikeInfo()
-    }
-  }, [posts, supabase])
+    setUserLikes(likes)
+  }, [posts, currentUser])
 
   const handleLike = async (postId: string) => {
     if (!currentUser) return
@@ -195,15 +150,6 @@ export default function PostList({
 
     setNewComment({ ...newComment, [postId]: "" })
     window.location.reload()
-  }
-
-  // Helper function to get like count
-  const getLikeCount = (post: PostProps): number => {
-    // Check if likes is an array and has at least one element
-    if (Array.isArray(post.likes) && post.likes.length > 0 && typeof post.likes[0].count === "number") {
-      return post.likes[0].count
-    }
-    return 0
   }
 
   const openImageGallery = (post: PostProps, index: number) => {
@@ -280,19 +226,19 @@ export default function PostList({
             <div className="relative">
               <span
                 className="text-gray-500"
-                onMouseEnter={() => getLikeCount(post) > 0 && setShowLikeTooltip(post.id)}
+                onMouseEnter={() => post.likes.length > 0 && setShowLikeTooltip(post.id)}
                 onMouseLeave={() => setShowLikeTooltip(null)}
               >
-                {getLikeCount(post) === 1 ? "1 like" : `${getLikeCount(post)} likes`}
+                {post.likes.length === 1 ? "1 like" : `${post.likes.length} likes`}
               </span>
 
-              {showLikeTooltip === post.id && likeInfo[post.id] && likeInfo[post.id].length > 0 && (
+              {showLikeTooltip === post.id && post.likes.length > 0 && (
                 <div className="absolute left-0 top-full mt-1 bg-white border border-gray-200 rounded p-2 shadow-sm z-10 w-48">
                   <p className="text-xs font-medium mb-1">Liked by:</p>
                   <ul className="text-xs">
-                    {likeInfo[post.id].map((user, index) => (
-                      <li key={index} className="truncate">
-                        {user.display_name || user.username}
+                    {post.likes.map((like) => (
+                      <li key={like.id} className="truncate">
+                        {like.users.display_name || like.users.username}
                       </li>
                     ))}
                   </ul>

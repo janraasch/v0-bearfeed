@@ -33,7 +33,11 @@ export default async function Home() {
             created_at,
             users (id, username, display_name)
           ),
-          likes (count),
+          likes (
+            id,
+            user_id,
+            users (id, username, display_name)
+          ),
           post_images (
             id,
             storage_path,
