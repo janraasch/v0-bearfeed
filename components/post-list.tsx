@@ -60,6 +60,7 @@ export default function PostList({
 }) {
   const { supabase } = useSupabase()
   const [newComment, setNewComment] = useState<Record<string, string>>({})
+  const [isSubmittingComment, setIsSubmittingComment] = useState<Record<string, boolean>>({})
   const [selectedImageIndex, setSelectedImageIndex] = useState<number | null>(null)
   const [selectedPostImages, setSelectedPostImages] = useState<PostImage[]>([])
   const [postsWithSignedUrls, setPostsWithSignedUrls] = useState<PostProps[]>([])
@@ -142,14 +143,50 @@ export default function PostList({
   const handleCommentSubmit = async (postId: string) => {
     if (!currentUser || !newComment[postId]) return
 
-    await supabase.from("comments").insert({
-      post_id: postId,
-      user_id: currentUser.id,
-      content: newComment[postId],
-    })
+    // Set the submitting state for this specific post
+    setIsSubmittingComment({ ...isSubmittingComment, [postId]: true })
 
-    setNewComment({ ...newComment, [postId]: "" })
-    window.location.reload()
+    try {
+      // Insert the comment
+      const { data: newCommentData, error } = await supabase
+        .from("comments")
+        .insert({
+          post_id: postId,
+          user_id: currentUser.id,
+          content: newComment[postId],
+        })
+        .select(`
+          id,
+          content,
+          created_at,
+          users (id, username, display_name)
+        `)
+        .single()
+
+      if (error) throw error
+
+      // Clear the comment input
+      setNewComment({ ...newComment, [postId]: "" })
+
+      // Update the posts state with the new comment
+      setPostsWithSignedUrls((currentPosts) =>
+        currentPosts.map((post) => {
+          if (post.id === postId) {
+            return {
+              ...post,
+              comments: [...post.comments, newCommentData],
+            }
+          }
+          return post
+        }),
+      )
+    } catch (error) {
+      console.error("Error submitting comment:", error)
+      alert("Failed to submit comment. Please try again.")
+    } finally {
+      // Clear the submitting state
+      setIsSubmittingComment({ ...isSubmittingComment, [postId]: false })
+    }
   }
 
   const openImageGallery = (post: PostProps, index: number) => {
@@ -275,9 +312,14 @@ export default function PostList({
                 onChange={(e) => setNewComment({ ...newComment, [post.id]: e.target.value })}
                 placeholder="Write a comment..."
                 className="form-input"
+                disabled={isSubmittingComment[post.id]}
               />
-              <button onClick={() => handleCommentSubmit(post.id)} className="button" disabled={!newComment[post.id]}>
-                Comment
+              <button
+                onClick={() => handleCommentSubmit(post.id)}
+                className="button"
+                disabled={!newComment[post.id] || isSubmittingComment[post.id]}
+              >
+                {isSubmittingComment[post.id] ? "Submitting..." : "Comment"}
               </button>
               <button onClick={() => handleLike(post.id)} className="button">
                 {userLikes[post.id] ? "Unlike" : "Like"}
