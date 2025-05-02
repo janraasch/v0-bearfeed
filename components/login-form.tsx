@@ -31,11 +31,8 @@ export default function LoginForm() {
       return
     }
 
-    // Add a small delay to ensure auth state is updated
-    setTimeout(() => {
-      router.push("/")
-      router.refresh()
-    }, 500)
+    // Navigate to home page - auth state will be handled by the provider
+    router.push("/")
   }
 
   return (
