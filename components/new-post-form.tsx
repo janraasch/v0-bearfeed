@@ -7,11 +7,16 @@ import { useSupabase } from "@/lib/supabase-provider"
 import ImageUpload from "./image-upload"
 import { v4 as uuidv4 } from "uuid"
 
-export default function NewPostForm() {
+interface NewPostFormProps {
+  onPostCreated?: (newPost: any) => void
+}
+
+export default function NewPostForm({ onPostCreated }: NewPostFormProps) {
   const [content, setContent] = useState("")
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [uploadProgress, setUploadProgress] = useState(0)
   const [selectedFiles, setSelectedFiles] = useState<File[]>([])
+  const [resetImageKey, setResetImageKey] = useState(0) // Add a key to reset the image upload component
   const { supabase, user } = useSupabase()
 
   const handleImagesSelected = (files: File[]) => {
@@ -34,19 +39,36 @@ export default function NewPostForm() {
           user_id: user.id,
           content: content.trim(),
         })
-        .select()
+        .select(`
+          id,
+          content,
+          created_at,
+          updated_at,
+          user_id,
+          users (id, username, display_name)
+        `)
         .single()
 
       if (postError) throw postError
+
+      // Initialize the post with empty arrays for comments and likes
+      const newPost = {
+        ...post,
+        comments: [],
+        likes: [],
+        post_images: [],
+      }
 
       // 2. Upload images if any are selected
       if (selectedFiles.length > 0) {
         const postId = post.id
         const totalFiles = selectedFiles.length
         let uploadedCount = 0
+        const uploadedImages = []
 
         // Create an array to hold all upload promises
-        const uploadPromises = selectedFiles.map(async (file, i) => {
+        for (let i = 0; i < selectedFiles.length; i++) {
+          const file = selectedFiles[i]
           const fileExt = file.name.split(".").pop()
           const fileName = `${uuidv4()}.${fileExt}`
           const filePath = `${user.id}/${postId}/${fileName}`
@@ -60,32 +82,47 @@ export default function NewPostForm() {
           const { data: publicUrlData } = supabase.storage.from("post-images").getPublicUrl(filePath)
 
           // Insert the image record
-          const { error: imageError } = await supabase.from("post_images").insert({
-            post_id: postId,
-            storage_path: filePath,
-            file_name: file.name,
-            content_type: file.type,
-            display_order: i,
-          })
+          const { data: imageData, error: imageError } = await supabase
+            .from("post_images")
+            .insert({
+              post_id: postId,
+              storage_path: filePath,
+              file_name: file.name,
+              content_type: file.type,
+              display_order: i,
+            })
+            .select()
+            .single()
 
           if (imageError) throw imageError
+
+          uploadedImages.push({
+            ...imageData,
+            signedUrl: publicUrlData.publicUrl,
+          })
 
           // Update progress
           uploadedCount++
           setUploadProgress(Math.round((uploadedCount / totalFiles) * 100))
-        })
+        }
 
-        // Wait for all uploads to complete
-        await Promise.all(uploadPromises)
+        // Add the uploaded images to the new post
+        newPost.post_images = uploadedImages
       }
 
       // Reset form
       setContent("")
       setSelectedFiles([])
       setUploadProgress(0)
-      window.location.reload()
+      setResetImageKey((prev) => prev + 1) // Increment the reset key to trigger the image component reset
+
+      // Notify parent component about the new post
+      if (onPostCreated) {
+        onPostCreated(newPost)
+      }
     } catch (error) {
       console.error("Error creating post:", error)
+      alert("Failed to create post. Please try again.")
     } finally {
       setIsSubmitting(false)
     }
@@ -104,10 +141,11 @@ export default function NewPostForm() {
           className="form-textarea"
           placeholder="Share something with your friends..."
           required
+          disabled={isSubmitting}
         />
       </div>
 
-      <ImageUpload onImagesSelected={handleImagesSelected} />
+      <ImageUpload onImagesSelected={handleImagesSelected} disabled={isSubmitting} resetKey={resetImageKey} />
 
       {uploadProgress > 0 && uploadProgress < 100 && (
         <div className="mt-2">
@@ -118,8 +156,8 @@ export default function NewPostForm() {
         </div>
       )}
 
-      <button type="submit" className="button button-primary mt-4" disabled={isSubmitting || !content.trim()}>
-        {isSubmitting ? "Posting..." : "Post"}
+      <button type="submit" className="button button-primary mt-4 w-32" disabled={isSubmitting || !content.trim()}>
+        {isSubmitting ? "•••" : "Post"}
       </button>
     </form>
   )

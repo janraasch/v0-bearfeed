@@ -1,9 +1,7 @@
 import { createServerSupabaseClient } from "@/lib/supabase-server"
 import AuthHeader from "@/components/auth-header"
 import Link from "next/link"
-import PostList from "@/components/post-list"
-import NewPostForm from "@/components/new-post-form"
-import RetentionNotice from "@/components/retention-notice"
+import HomeClient from "./home-client"
 
 export default async function Home() {
   const supabase = createServerSupabaseClient()
@@ -57,23 +55,8 @@ export default async function Home() {
       <AuthHeader />
 
       {user ? (
-        // Content for authenticated users
-        <>
-          <div className="mb-8">
-            <NewPostForm />
-          </div>
-
-          {posts.length > 0 ? (
-            <PostList posts={posts} currentUser={user} />
-          ) : (
-            <div className="text-center py-8">
-              <p>No posts yet.</p>
-              <p>Be the first to post something!</p>
-            </div>
-          )}
-
-          <RetentionNotice />
-        </>
+        // Content for authenticated users - using client component to manage state
+        <HomeClient initialPosts={posts} currentUser={user} />
       ) : (
         // Content for unauthenticated users
         <div className="text-center py-12">

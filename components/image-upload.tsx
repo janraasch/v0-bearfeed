@@ -2,7 +2,7 @@
 
 import type React from "react"
 
-import { useState, useRef } from "react"
+import { useState, useRef, useEffect } from "react"
 import Image from "next/image"
 
 type ImageFile = {
@@ -13,11 +13,24 @@ type ImageFile = {
 
 interface ImageUploadProps {
   onImagesSelected: (files: File[]) => void
+  disabled?: boolean
+  resetKey?: number // Add a reset key prop
 }
 
-export default function ImageUpload({ onImagesSelected }: ImageUploadProps) {
+export default function ImageUpload({ onImagesSelected, disabled = false, resetKey = 0 }: ImageUploadProps) {
   const [selectedImages, setSelectedImages] = useState<ImageFile[]>([])
   const fileInputRef = useRef<HTMLInputElement>(null)
+
+  // Reset selected images when resetKey changes
+  useEffect(() => {
+    if (resetKey > 0) {
+      // Clean up any object URLs to prevent memory leaks
+      selectedImages.forEach((img) => {
+        URL.revokeObjectURL(img.preview)
+      })
+      setSelectedImages([])
+    }
+  }, [resetKey])
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (!e.target.files || e.target.files.length === 0) return
@@ -70,7 +83,7 @@ export default function ImageUpload({ onImagesSelected }: ImageUploadProps) {
   return (
     <div className="space-y-4">
       <div className="flex items-center gap-2">
-        <label htmlFor="images" className="button">
+        <label htmlFor="images" className={`button ${disabled ? "opacity-50 cursor-not-allowed" : ""}`}>
           Add Images
         </label>
         <input
@@ -81,6 +94,7 @@ export default function ImageUpload({ onImagesSelected }: ImageUploadProps) {
           accept="image/*"
           multiple
           className="hidden"
+          disabled={disabled}
         />
         <span className="text-sm text-gray-500">
           {selectedImages.length > 0
@@ -106,8 +120,9 @@ export default function ImageUpload({ onImagesSelected }: ImageUploadProps) {
               <button
                 type="button"
                 onClick={() => removeImage(img.id)}
-                className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs opacity-0 group-hover:opacity-100 transition-opacity"
+                className={`absolute -top-2 -right-2 bg-red-500 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs opacity-0 ${disabled ? "hidden" : "group-hover:opacity-100"} transition-opacity`}
                 aria-label="Remove image"
+                disabled={disabled}
               >
                 ×
               </button>
