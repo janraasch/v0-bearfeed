@@ -61,6 +61,7 @@ export default function PostList({
   const { supabase } = useSupabase()
   const [newComment, setNewComment] = useState<Record<string, string>>({})
   const [isSubmittingComment, setIsSubmittingComment] = useState<Record<string, boolean>>({})
+  const [isProcessingLike, setIsProcessingLike] = useState<Record<string, boolean>>({})
   const [selectedImageIndex, setSelectedImageIndex] = useState<number | null>(null)
   const [selectedPostImages, setSelectedPostImages] = useState<PostImage[]>([])
   const [postsWithSignedUrls, setPostsWithSignedUrls] = useState<PostProps[]>([])
@@ -119,25 +120,72 @@ export default function PostList({
   const handleLike = async (postId: string) => {
     if (!currentUser) return
 
-    // Check if user already liked the post
-    const hasLiked = userLikes[postId]
+    // Set processing state for this post
+    setIsProcessingLike({ ...isProcessingLike, [postId]: true })
 
-    if (hasLiked) {
-      // Unlike
-      await supabase.from("likes").delete().eq("post_id", postId).eq("user_id", currentUser.id)
-      // Update local state
-      setUserLikes({ ...userLikes, [postId]: false })
-    } else {
-      // Like
-      await supabase.from("likes").insert({
-        post_id: postId,
-        user_id: currentUser.id,
-      })
-      // Update local state
-      setUserLikes({ ...userLikes, [postId]: true })
+    try {
+      // Check if user already liked the post
+      const hasLiked = userLikes[postId]
+
+      if (hasLiked) {
+        // Unlike - delete the like
+        await supabase.from("likes").delete().eq("post_id", postId).eq("user_id", currentUser.id)
+
+        // Update the posts state by removing the user's like
+        setPostsWithSignedUrls((currentPosts) =>
+          currentPosts.map((post) => {
+            if (post.id === postId) {
+              return {
+                ...post,
+                likes: post.likes.filter((like) => like.user_id !== currentUser.id),
+              }
+            }
+            return post
+          }),
+        )
+
+        // Update local likes state
+        setUserLikes({ ...userLikes, [postId]: false })
+      } else {
+        // Like - insert a new like
+        const { data: newLike, error } = await supabase
+          .from("likes")
+          .insert({
+            post_id: postId,
+            user_id: currentUser.id,
+          })
+          .select(`
+            id,
+            user_id,
+            users (id, username, display_name)
+          `)
+          .single()
+
+        if (error) throw error
+
+        // Update the posts state by adding the new like
+        setPostsWithSignedUrls((currentPosts) =>
+          currentPosts.map((post) => {
+            if (post.id === postId) {
+              return {
+                ...post,
+                likes: [...post.likes, newLike],
+              }
+            }
+            return post
+          }),
+        )
+
+        // Update local likes state
+        setUserLikes({ ...userLikes, [postId]: true })
+      }
+    } catch (error) {
+      console.error("Error processing like:", error)
+      alert("Failed to process like. Please try again.")
+    } finally {
+      // Clear the processing state
+      setIsProcessingLike({ ...isProcessingLike, [postId]: false })
     }
-
-    window.location.reload()
   }
 
   const handleCommentSubmit = async (postId: string) => {
@@ -316,13 +364,13 @@ export default function PostList({
               />
               <button
                 onClick={() => handleCommentSubmit(post.id)}
-                className="button"
+                className="button w-24"
                 disabled={!newComment[post.id] || isSubmittingComment[post.id]}
               >
-                {isSubmittingComment[post.id] ? "Submitting..." : "Comment"}
+                {isSubmittingComment[post.id] ? "•••" : "Comment"}
               </button>
-              <button onClick={() => handleLike(post.id)} className="button">
-                {userLikes[post.id] ? "Unlike" : "Like"}
+              <button onClick={() => handleLike(post.id)} className="button w-24" disabled={isProcessingLike[post.id]}>
+                {isProcessingLike[post.id] ? "•••" : userLikes[post.id] ? "Unlike" : "Like"}
               </button>
             </div>
           )}
