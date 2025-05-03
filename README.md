@@ -2,6 +2,8 @@
 
 A minimalist social feed app inspired by the clean aesthetic of Bear Blog.
 
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/yourusername/bear-feed)
+
 ## Features
 
 - Content-first approach with focus on readability
