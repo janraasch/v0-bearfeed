@@ -292,17 +292,19 @@ export default function PostList({
 
           {post.comments.length > 0 && (
             <div className="mb-4">
-              {post.comments.map((comment) => (
-                <div key={comment.id} className="comment">
-                  <div>
-                    <span className="font-medium">{comment.users.display_name || comment.users.username}</span>
-                    <span className="text-gray-500 text-sm ml-2">
-                      {formatDistanceToNow(new Date(comment.created_at), { addSuffix: true })}
-                    </span>
+              {[...post.comments]
+                .sort((a, b) => new Date(a.created_at).getTime() - new Date(b.created_at).getTime())
+                .map((comment) => (
+                  <div key={comment.id} className="comment">
+                    <div>
+                      <span className="font-medium">{comment.users.display_name || comment.users.username}</span>
+                      <span className="text-gray-500 text-sm ml-2">
+                        {formatDistanceToNow(new Date(comment.created_at), { addSuffix: true })}
+                      </span>
+                    </div>
+                    <div className="break-words">{formatTextWithLinks(comment.content)}</div>
                   </div>
-                  <div className="break-words">{formatTextWithLinks(comment.content)}</div>
-                </div>
-              ))}
+                ))}
             </div>
           )}
 
