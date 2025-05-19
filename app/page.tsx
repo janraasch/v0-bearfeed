@@ -1,48 +1,71 @@
-import { createServerSupabaseClient } from "@/lib/supabase-server"
+"use client"
+
+import { useState, useEffect } from "react"
 import AuthHeader from "@/components/auth-header"
 import Link from "next/link"
-import HomeClient from "@/components/home-client"
+import { useSupabase } from "@/lib/supabase-provider"
 import type { PostProps } from "@/types/post"
+import HomeClient from "@/components/home-client"
 
-export default async function Home() {
-  const supabase = createServerSupabaseClient()
+export default function Home() {
+  const { supabase, user } = useSupabase()
+  const [posts, setPosts] = useState<PostProps[]>([])
+  const [isLoading, setIsLoading] = useState(true)
 
-  // Get user with a single call - this validates the session token
-  const {
-    data: { user },
-  } = await supabase.auth.getUser()
+  // Fetch posts when user is authenticated
+  useEffect(() => {
+    const fetchPosts = async () => {
+      if (!user) {
+        setIsLoading(false)
+        return
+      }
 
-  let posts: PostProps[] = []
+      try {
+        const { data: postsData = [] } = await supabase
+          .from("posts")
+          .select(`
+            *,
+            users (id, username, display_name),
+            comments (
+              id,
+              content,
+              created_at,
+              users (id, username, display_name)
+            ),
+            likes (
+              id,
+              user_id,
+              users (id, username, display_name)
+            ),
+            post_images (
+              id,
+              storage_path,
+              file_name,
+              content_type,
+              display_order
+            )
+          `)
+          .order("updated_at", { ascending: false })
 
-  // Only fetch posts if user is authenticated
-  if (user) {
-    const { data: postsData = [] } = await supabase
-      .from("posts")
-      .select(`
-        *,
-        users (id, username, display_name),
-        comments (
-          id,
-          content,
-          created_at,
-          users (id, username, display_name)
-        ),
-        likes (
-          id,
-          user_id,
-          users (id, username, display_name)
-        ),
-        post_images (
-          id,
-          storage_path,
-          file_name,
-          content_type,
-          display_order
-        )
-      `)
-      .order("updated_at", { ascending: false })
+        setPosts(postsData)
+      } catch (error) {
+        console.error("Error fetching posts:", error)
+      } finally {
+        setIsLoading(false)
+      }
+    }
 
-    posts = postsData
+    fetchPosts()
+  }, [supabase, user])
+
+  // Show loading state
+  if (isLoading) {
+    return (
+      <main>
+        <AuthHeader />
+        <div className="text-center py-8">Loading...</div>
+      </main>
+    )
   }
 
   return (
@@ -50,7 +73,7 @@ export default async function Home() {
       <AuthHeader />
 
       {user ? (
-        // Content for authenticated users - using client component to manage state
+        // Content for authenticated users
         <HomeClient initialPosts={posts} currentUser={user} />
       ) : (
         // Content for unauthenticated users
