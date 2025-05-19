@@ -21,35 +21,22 @@ export function SupabaseProvider({ children }: { children: React.ReactNode }) {
   const [isLoading, setIsLoading] = useState(true)
 
   useEffect(() => {
-    const getUser = async () => {
-      try {
-        // Get session and use session.user directly
-        const {
-          data: { session },
-        } = await supabase.auth.getSession()
+    // Set up the auth state listener that also fires with the initial session
+    const {
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange((event, session) => {
+      setUser(session?.user || null)
 
-        // Set user from session if it exists
-        setUser(session?.user || null)
-      } catch (error) {
-        console.error("Error in auth state:", error)
-        setUser(null)
-      } finally {
+      // Only set loading to false after we've checked the initial session
+      if (event === "INITIAL_SESSION") {
         setIsLoading(false)
       }
+    })
 
-      const {
-        data: { subscription },
-      } = supabase.auth.onAuthStateChange(async (event, session) => {
-        // Use session.user directly from the event
-        setUser(session?.user || null)
-      })
-
-      return () => {
-        subscription.unsubscribe()
-      }
+    // Clean up subscription on unmount
+    return () => {
+      subscription.unsubscribe()
     }
-
-    getUser()
   }, [supabase])
 
   return <Context.Provider value={{ supabase, user }}>{!isLoading && children}</Context.Provider>
