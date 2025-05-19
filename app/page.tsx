@@ -45,7 +45,7 @@ export default function Home() {
               display_order
             )
           `)
-          .order("updated_at", { ascending: false })
+          .order("created_at", { ascending: false })
 
         setPosts(postsData)
       } catch (error) {
