@@ -23,16 +23,13 @@ export function SupabaseProvider({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     const getUser = async () => {
       try {
-        // First check if we have a session
-        const { data: sessionData } = await supabase.auth.getSession()
+        // Get session and use session.user directly
+        const {
+          data: { session },
+        } = await supabase.auth.getSession()
 
-        // Only try to get the user if we have a session
-        if (sessionData?.session) {
-          const { data: userData } = await supabase.auth.getUser()
-          setUser(userData.user)
-        } else {
-          setUser(null)
-        }
+        // Set user from session if it exists
+        setUser(session?.user || null)
       } catch (error) {
         console.error("Error in auth state:", error)
         setUser(null)
@@ -43,18 +40,8 @@ export function SupabaseProvider({ children }: { children: React.ReactNode }) {
       const {
         data: { subscription },
       } = supabase.auth.onAuthStateChange(async (event, session) => {
-        try {
-          if (session) {
-            // When we have a session, get the authenticated user
-            const { data: userData } = await supabase.auth.getUser()
-            setUser(userData.user)
-          } else {
-            setUser(null)
-          }
-        } catch (error) {
-          console.error("Error in auth state change:", error)
-          setUser(null)
-        }
+        // Use session.user directly from the event
+        setUser(session?.user || null)
       })
 
       return () => {
