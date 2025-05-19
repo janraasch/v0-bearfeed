@@ -7,48 +7,42 @@ import type { PostProps } from "@/types/post"
 export default async function Home() {
   const supabase = createServerSupabaseClient()
 
-  // Get session first (this won't throw an error if no session exists)
-  const { data: sessionData } = await supabase.auth.getSession()
+  // Get user with a single call - this validates the session token
+  const {
+    data: { user },
+  } = await supabase.auth.getUser()
 
-  // Only try to get the user if we have a session
-  let user = null
   let posts: PostProps[] = []
 
-  if (sessionData?.session) {
-    // Get authenticated user
-    const { data: userData } = await supabase.auth.getUser()
-    user = userData.user
+  // Only fetch posts if user is authenticated
+  if (user) {
+    const { data: postsData = [] } = await supabase
+      .from("posts")
+      .select(`
+        *,
+        users (id, username, display_name),
+        comments (
+          id,
+          content,
+          created_at,
+          users (id, username, display_name)
+        ),
+        likes (
+          id,
+          user_id,
+          users (id, username, display_name)
+        ),
+        post_images (
+          id,
+          storage_path,
+          file_name,
+          content_type,
+          display_order
+        )
+      `)
+      .order("updated_at", { ascending: false })
 
-    // Only fetch posts if user is authenticated
-    if (user) {
-      const { data: postsData = [] } = await supabase
-        .from("posts")
-        .select(`
-          *,
-          users (id, username, display_name),
-          comments (
-            id,
-            content,
-            created_at,
-            users (id, username, display_name)
-          ),
-          likes (
-            id,
-            user_id,
-            users (id, username, display_name)
-          ),
-          post_images (
-            id,
-            storage_path,
-            file_name,
-            content_type,
-            display_order
-          )
-        `)
-        .order("created_at", { ascending: false })
-
-      posts = postsData
-    }
+    posts = postsData
   }
 
   return (
