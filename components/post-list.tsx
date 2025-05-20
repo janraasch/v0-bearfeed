@@ -202,6 +202,11 @@ export default function PostList({
     setSelectedImageIndex(null)
   }
 
+  // Helper function to check if post is special
+  const isSpecialPost = (content: string) => {
+    return content.includes("Nur Bear Feed") || content.includes("inspired by Bear")
+  }
+
   // If we're still loading signed URLs, show a loading state
   if (posts.length > 0 && postsWithSignedUrls.length === 0) {
     return <div className="text-center py-4">Loading posts...</div>
@@ -210,16 +215,13 @@ export default function PostList({
   return (
     <div>
       {postsWithSignedUrls.map((post) => (
-        <article
-          key={post.id}
-          className={`post ${post.content.includes("Nur Bear Feed") ? "border-b-2 border-rose-200" : ""}`}
-        >
+        <article key={post.id} className={`post ${isSpecialPost(post.content) ? "border-b-2 border-rose-200" : ""}`}>
           <div className="mb-2 flex items-center flex-wrap gap-x-2">
             <span className="font-medium">{post.users.display_name || post.users.username}</span>
             <span className="text-gray-500 text-sm">
               {formatDistanceToNow(new Date(post.created_at), { addSuffix: true })}
             </span>
-            {post.content.includes("Nur Bear Feed") && (
+            {isSpecialPost(post.content) && (
               <span className="bg-rose-100 text-rose-700 text-xs font-medium px-2 py-0.5 rounded-full ml-1">
                 ʕ •ᴥ~ʔ ♥ Honey of a Post
               </span>
