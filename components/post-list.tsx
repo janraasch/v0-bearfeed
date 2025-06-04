@@ -315,6 +315,12 @@ export default function PostList({
               type="text"
               value={newComment[post.id] || ""}
               onChange={(e) => setNewComment({ ...newComment, [post.id]: e.target.value })}
+              onKeyDown={(e) => {
+                if (e.key === "Enter" && !e.shiftKey && newComment[post.id]?.trim() && !isSubmittingComment[post.id]) {
+                  e.preventDefault()
+                  handleCommentSubmit(post.id)
+                }
+              }}
               placeholder="Write a comment..."
               className="form-input"
               disabled={isSubmittingComment[post.id]}
