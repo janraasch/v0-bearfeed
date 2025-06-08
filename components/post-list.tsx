@@ -276,11 +276,11 @@ export default function PostList({
               </span>
 
               {showLikeTooltip === post.id && post.likes.length > 0 && (
-                <div className="absolute left-0 top-full mt-1 bg-white border border-gray-200 rounded p-2 shadow-sm z-10 w-48">
-                  <p className="text-xs font-medium mb-1">Liked by:</p>
+                <div className="absolute left-0 top-full mt-1 bg-white dark:bg-[#1e3a46] border border-gray-200 dark:border-[#2a4a56] rounded p-2 shadow-sm z-10 w-48">
+                  <p className="text-xs font-medium mb-1 text-gray-900 dark:text-gray-100">Liked by:</p>
                   <ul className="text-xs">
                     {post.likes.map((like) => (
-                      <li key={like.id} className="truncate">
+                      <li key={like.id} className="truncate text-gray-700 dark:text-gray-300">
                         {like.users.display_name || like.users.username}
                       </li>
                     ))}
