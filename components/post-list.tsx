@@ -312,7 +312,7 @@ export default function PostList({
             </div>
           )}
 
-          <div className="flex gap-2">
+          <div className="flex flex-col sm:flex-row gap-2">
             <input
               type="text"
               value={newComment[post.id] || ""}
@@ -327,16 +327,18 @@ export default function PostList({
               className="form-input"
               disabled={isSubmittingComment[post.id]}
             />
-            <button
-              onClick={() => handleCommentSubmit(post.id)}
-              className="button w-24"
-              disabled={!newComment[post.id] || isSubmittingComment[post.id]}
-            >
-              {isSubmittingComment[post.id] ? "•••" : "Comment"}
-            </button>
-            <button onClick={() => handleLike(post.id)} className="button w-24" disabled={isProcessingLike[post.id]}>
-              {isProcessingLike[post.id] ? "•••" : userLikes[post.id] ? "Unlike" : "Like"}
-            </button>
+            <div className="flex gap-2 w-full sm:w-auto">
+              <button
+                onClick={() => handleCommentSubmit(post.id)}
+                className="button w-2/3 sm:w-24"
+                disabled={!newComment[post.id] || isSubmittingComment[post.id]}
+              >
+                {isSubmittingComment[post.id] ? "•••" : "Comment"}
+              </button>
+              <button onClick={() => handleLike(post.id)} className="button w-1/3 sm:w-20" disabled={isProcessingLike[post.id]}>
+                {isProcessingLike[post.id] ? "•••" : userLikes[post.id] ? "Unlike" : "Like"}
+              </button>
+            </div>
           </div>
         </article>
       ))}
