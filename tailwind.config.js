@@ -38,6 +38,22 @@ module.exports = {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
         },
+        "bear-bg": {
+          light: "#ffffff",
+          dark: "#01242e",
+        },
+        "bear-text": {
+          light: "#000000",
+          dark: "#dddddd",
+        },
+        "bear-link": {
+          light: "#3b82f6",
+          dark: "#8cc2dd",
+        },
+        "bear-border": {
+          light: "#eeeeee",
+          dark: "#2a4a56",
+        },
       },
       borderRadius: {
         lg: "var(--radius)",
