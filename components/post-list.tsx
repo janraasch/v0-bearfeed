@@ -222,7 +222,7 @@ export default function PostList({
         <article key={post.id} className={`post ${isSpecialPost(post.content) ? "border-b-2 border-rose-200" : ""}`}>
           <div className="mb-2 flex items-center flex-wrap gap-x-2">
             <span className="font-medium">{post.users.display_name || post.users.username}</span>
-            <span className="text-gray-500 text-sm">
+            <span className="text-gray-500 dark:text-gray-400 text-sm">
               {formatDistanceToNow(new Date(post.created_at), { addSuffix: true })}
             </span>
             {isSpecialPost(post.content) && (
@@ -268,7 +268,7 @@ export default function PostList({
           <div className="flex gap-4 text-sm mb-4">
             <div className="relative">
               <span
-                className="text-gray-500"
+                className="text-gray-500 dark:text-gray-400"
                 onMouseEnter={() => post.likes.length > 0 && setShowLikeTooltip(post.id)}
                 onMouseLeave={() => setShowLikeTooltip(null)}
               >
@@ -289,7 +289,7 @@ export default function PostList({
               )}
             </div>
 
-            <span className="text-gray-500">
+            <span className="text-gray-500 dark:text-gray-400">
               {post.comments.length === 1 ? "1 comment" : `${post.comments.length} comments`}
             </span>
           </div>
@@ -302,7 +302,7 @@ export default function PostList({
                   <div key={comment.id} className="comment">
                     <div>
                       <span className="font-medium">{comment.users.display_name || comment.users.username}</span>
-                      <span className="text-gray-500 text-sm ml-2">
+                      <span className="text-gray-500 dark:text-gray-400 text-sm ml-2">
                         {formatDistanceToNow(new Date(comment.created_at), { addSuffix: true })}
                       </span>
                     </div>
@@ -335,7 +335,11 @@ export default function PostList({
               >
                 {isSubmittingComment[post.id] ? "•••" : "Comment"}
               </button>
-              <button onClick={() => handleLike(post.id)} className="button w-1/3 sm:w-20" disabled={isProcessingLike[post.id]}>
+              <button
+                onClick={() => handleLike(post.id)}
+                className="button w-1/3 sm:w-20"
+                disabled={isProcessingLike[post.id]}
+              >
                 {isProcessingLike[post.id] ? "•••" : userLikes[post.id] ? "Unlike" : "Like"}
               </button>
             </div>

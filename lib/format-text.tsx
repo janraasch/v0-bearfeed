@@ -25,14 +25,14 @@ export function formatTextWithLinks(text: string): React.ReactNode[] {
     // Truncate display URL if it's too long
     const displayUrl = url.length > 50 ? url.substring(0, 47) + "..." : url
 
-    // Add the link with proper styling for overflow
+    // Add the link with proper styling for overflow and dark mode support
     result.push(
       <a
         key={`link-${match.index}`}
         href={href}
         target="_blank"
         rel="noopener noreferrer"
-        className="text-blue-600 hover:underline break-all"
+        className="text-blue-600 dark:text-[#8cc2dd] hover:underline break-all transition-colors"
         title={url} // Show full URL on hover
       >
         {displayUrl}
