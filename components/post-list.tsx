@@ -7,7 +7,7 @@ import type { User } from "@supabase/auth-helpers-nextjs"
 import Image from "next/image"
 import ImageGallery from "./image-gallery"
 import { formatTextWithLinks } from "@/lib/format-text"
-import type { PostProps, PostImage } from "@/types/post"
+import type { Like, PostProps, PostImage, Comment } from "@/types/post"
 
 export default function PostList({
   posts,
@@ -102,7 +102,7 @@ export default function PostList({
         setUserLikes({ ...userLikes, [postId]: false })
       } else {
         // Like - insert a new like
-        const { data: newLike, error } = await supabase
+        const { data: newLike, error }: { data: Like | null; error: Error | null } = await supabase
           .from("likes")
           .insert({
             post_id: postId,
@@ -117,21 +117,23 @@ export default function PostList({
 
         if (error) throw error
 
-        // Update the posts state by adding the new like
-        setPostsWithSignedUrls((currentPosts) =>
-          currentPosts.map((post) => {
-            if (post.id === postId) {
-              return {
-                ...post,
-                likes: [...post.likes, newLike],
+        if (newLike) {
+          // Update the posts state by adding the new like
+          setPostsWithSignedUrls((currentPosts) =>
+            currentPosts.map((post) => {
+              if (post.id === postId) {
+                return {
+                  ...post,
+                  likes: [...post.likes, newLike],
+                }
               }
-            }
-            return post
-          }),
-        )
+              return post
+            }),
+          )
 
-        // Update local likes state
-        setUserLikes({ ...userLikes, [postId]: true })
+          // Update local likes state
+          setUserLikes({ ...userLikes, [postId]: true })
+        }
       }
     } catch (error) {
       console.error("Error processing like:", error)
@@ -150,7 +152,7 @@ export default function PostList({
 
     try {
       // Insert the comment
-      const { data: newCommentData, error } = await supabase
+      const { data: newCommentData, error }: { data: Comment | null; error: Error | null } = await supabase
         .from("comments")
         .insert({
           post_id: postId,
@@ -167,21 +169,23 @@ export default function PostList({
 
       if (error) throw error
 
-      // Clear the comment input
-      setNewComment({ ...newComment, [postId]: "" })
+      if (newCommentData) {
+        // Clear the comment input
+        setNewComment({ ...newComment, [postId]: "" })
 
-      // Update the posts state with the new comment
-      setPostsWithSignedUrls((currentPosts) =>
-        currentPosts.map((post) => {
-          if (post.id === postId) {
-            return {
-              ...post,
-              comments: [...post.comments, newCommentData],
+        // Update the posts state with the new comment
+        setPostsWithSignedUrls((currentPosts) =>
+          currentPosts.map((post) => {
+            if (post.id === postId) {
+              return {
+                ...post,
+                comments: [...post.comments, newCommentData],
+              }
             }
-          }
-          return post
-        }),
-      )
+            return post
+          }),
+        )
+      }
     } catch (error) {
       console.error("Error submitting comment:", error)
       alert("Failed to submit comment. Please try again.")
