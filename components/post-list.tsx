@@ -247,8 +247,6 @@ export default function PostList({
                           alt={image.file_name}
                           placeholder="blur"
                           fill
-                          width="96"
-                          height="96"
                           blurDataURL="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+P+/HgAEtAJJXIDTjwAAAABJRU5ErkJggg=="
                           style={{ objectFit: "cover" }}
                         />
