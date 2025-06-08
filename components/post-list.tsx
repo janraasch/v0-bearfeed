@@ -241,7 +241,7 @@ export default function PostList({
                 .map((image, index) => (
                   <div
                     key={image.id}
-                    className="cursor-pointer border border-gray-200 rounded overflow-hidden"
+                    className="cursor-pointer border border-gray-200 dark:border-[#2a4a56] rounded overflow-hidden"
                     onClick={() => openImageGallery(post, index)}
                   >
                     <div className="relative w-24 h-24">
