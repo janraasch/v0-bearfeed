@@ -64,3 +64,4 @@ Posts are automatically removed after 15 days to keep the feed fresh.
 [fluent-emoji-mit-url]: https://github.com/microsoft/fluentui-emoji/blob/main/LICENSE
 [repo-url]: https://github.com/janraasch/v0-bearfeed
 [author-url]: https://www.janraasch.com
+[v0-url]: https://v0.dev
