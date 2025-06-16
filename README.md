@@ -2,6 +2,16 @@
 
 A minimalist social feed app inspired by the clean aesthetic of [Bear Blog][bear-blog-url].
 
+## Raison d'être
+
+Bear Feed is currently in a "friends & family alpha" phase, being used by a small group of friends. The project embraces a philosophy of intentional social connection:
+
+- **Local & Small**: Designed for close-knit communities rather than mass adoption
+- **Distraction-Free**: No notifications, no real-time updates, and posts that automatically expire after 15 days to keep the feed fresh and intentional
+- **Accessible**: Built with [Next.js][nextjs-url], [TailwindCSS][tailwind-url], [Supabase][supabase-url], and [v0.dev][v0-url] to make it easy for anyone to build & deploy their own social feed with minimal technical knowledge
+
+The goal is to empower people to create and run their own spaces for meaningful connections.
+
 ## Features
 
 - Content-first approach with focus on readability
