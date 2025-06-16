@@ -43,7 +43,7 @@ Posts are automatically removed after 15 days to keep the feed fresh.
 ## Special Thanks 🎁
 
 * A special thank you goes out to [Herman][herman-url] for creating the original [ʕ•ᴥ•ʔ Bear Blog][bear-blog-url].
-* The teddy bear icon (ʕ •ᴥ• ʔ) is from [Microsoft's Fluent Emoji][fluent-emoji-url] collection - licensed under [MIT][fluent-emoji-mit-url].
+* The teddy bear icon is from [Microsoft's Fluent Emoji][fluent-emoji-url] collection - licensed under [MIT][fluent-emoji-mit-url].
 
 ## License
 
