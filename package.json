@@ -8,6 +8,11 @@
     "start": "next start",
     "lint": "next lint"
   },
+  "nextConfig": {
+    "telemetry": {
+      "enabled": false
+    }
+  },
   "dependencies": {
     "@hookform/resolvers": "^3.9.1",
     "@radix-ui/react-accordion": "latest",
