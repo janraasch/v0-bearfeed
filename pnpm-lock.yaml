@@ -311,8 +311,8 @@ packages:
     peerDependencies:
       '@supabase/supabase-js': ^2.43.4
 
-  '@supabase/storage-js@2.10.5':
-    resolution: {integrity: sha512-9O7DfVI+v+exwPIKFGlCn2gigx441ojHnJ5QpHPegvblPdZQnnmCrL+A0JHj7wD/e+f9fnLu/DBKAtLYrLtftw==}
+  '@supabase/storage-js@2.11.0':
+    resolution: {integrity: sha512-Y+kx/wDgd4oasAgoAq0bsbQojwQ+ejIif8uczZ9qufRHWFLMU5cODT+ApHsSrDufqUcVKt+eyxtOXSkeh2v9ww==}
 
   '@supabase/supabase-js@2.56.0':
     resolution: {integrity: sha512-XqwhHSyVnkjdliPN61CmXsmFGnFHTX2WDdwjG3Ukvdzuu3Trix+dXupYOQ3BueIyYp7B6t0yYpdQtJP2hIInyg==}
@@ -1061,7 +1061,7 @@ snapshots:
       '@supabase/supabase-js': 2.56.0
       cookie: 1.0.2
 
-  '@supabase/storage-js@2.10.5':
+  '@supabase/storage-js@2.11.0':
     dependencies:
       '@supabase/node-fetch': 2.6.15
 
@@ -1072,7 +1072,7 @@ snapshots:
       '@supabase/node-fetch': 2.6.15
       '@supabase/postgrest-js': 1.21.3
       '@supabase/realtime-js': 2.15.1
-      '@supabase/storage-js': 2.10.5
+      '@supabase/storage-js': 2.11.0
     transitivePeerDependencies:
       - bufferutil
       - utf-8-validate
