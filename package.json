@@ -18,7 +18,7 @@
     "@supabase/ssr": "latest",
     "@supabase/supabase-js": "latest",
     "date-fns": "latest",
-    "next": "15.5.0",
+    "next": "15.5.2",
     "next-themes": "latest",
     "react": "^19",
     "react-dom": "^19",
