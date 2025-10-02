@@ -20,15 +20,15 @@
     "date-fns": "latest",
     "next": "15.5.4",
     "next-themes": "latest",
-    "react": "^19",
-    "react-dom": "^19",
+    "react": "^19.2.0",
+    "react-dom": "^19.2.0",
     "tailwindcss-animate": "^1.0.7",
     "uuid": "latest"
   },
   "devDependencies": {
     "@types/node": "^24",
-    "@types/react": "^19",
-    "@types/react-dom": "^19",
+    "@types/react": "^19.2.0",
+    "@types/react-dom": "^19.2.0",
     "postcss": "^8.5",
     "tailwindcss": "^3.4.18",
     "typescript": "^5"
