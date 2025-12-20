@@ -24,6 +24,7 @@
     "next-themes": "latest",
     "react": "^19.2.3",
     "react-dom": "^19.2.3",
+    "react-snowfall": "^2.4.0",
     "tailwindcss-animate": "^1.0.7",
     "uuid": "latest"
   },
