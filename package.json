@@ -20,7 +20,7 @@
     "date-fns": "latest",
     "linkify-react": "^4.3.2",
     "linkifyjs": "^4.3.2",
-    "next": "16.1.5",
+    "next": "16.1.6",
     "next-themes": "latest",
     "react": "^19.2.4",
     "react-dom": "^19.2.4",
