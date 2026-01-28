@@ -10,13 +10,13 @@ importers:
     dependencies:
       '@supabase/auth-helpers-nextjs':
         specifier: latest
-        version: 0.15.0(@supabase/supabase-js@2.93.1)
+        version: 0.15.0(@supabase/supabase-js@2.93.2)
       '@supabase/ssr':
         specifier: latest
-        version: 0.8.0(@supabase/supabase-js@2.93.1)
+        version: 0.8.0(@supabase/supabase-js@2.93.2)
       '@supabase/supabase-js':
         specifier: latest
-        version: 2.93.1
+        version: 2.93.2
       date-fns:
         specifier: latest
         version: 4.1.0
@@ -28,19 +28,19 @@ importers:
         version: 4.3.2
       next:
         specifier: 16.1.5
-        version: 16.1.5(react-dom@19.2.3(react@19.2.4))(react@19.2.4)
+        version: 16.1.5(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
       next-themes:
         specifier: latest
-        version: 0.4.6(react-dom@19.2.3(react@19.2.4))(react@19.2.4)
+        version: 0.4.6(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
       react:
         specifier: ^19.2.4
         version: 19.2.4
       react-dom:
-        specifier: ^19.2.3
-        version: 19.2.3(react@19.2.4)
+        specifier: ^19.2.4
+        version: 19.2.4(react@19.2.4)
       react-snowfall:
         specifier: ^2.4.0
-        version: 2.4.0(react-dom@19.2.3(react@19.2.4))(react@19.2.4)
+        version: 2.4.0(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
       tailwindcss-animate:
         specifier: ^1.0.7
         version: 1.0.7(tailwindcss@3.4.19(yaml@2.8.0))
@@ -295,20 +295,20 @@ packages:
     peerDependencies:
       '@supabase/supabase-js': ^2.76.1
 
-  '@supabase/auth-js@2.93.1':
-    resolution: {integrity: sha512-pC0Ek4xk4z6q7A/3+UuZ/eYgfFUUQTg3DhapzrAgJnFGDJDFDyGCj6v9nIz8+3jfLqSZ3QKGe6AoEodYjShghg==}
+  '@supabase/auth-js@2.93.2':
+    resolution: {integrity: sha512-uifI5vkhvHCQjn+LUPL5QlsuDMP4oVBD5SiliREgYuTJvCkbPLOcAPGrw88q7VUX9S0J0QuJn+37hrcTITisuw==}
     engines: {node: '>=20.0.0'}
 
-  '@supabase/functions-js@2.93.1':
-    resolution: {integrity: sha512-Ott2IcIXHGupaC0nX9WNEiJAX4OdlGRu9upkkURaQHbaLdz9JuCcHxlwTERgtgjMpikbIWHfMM1M9QTQFYABiA==}
+  '@supabase/functions-js@2.93.2':
+    resolution: {integrity: sha512-reSp7yj4KmvAFfmN+N7vYsHXOIZQh9cmRBh+VrZlm7qgIIUdYmzKuD85TvFnWApqcdI2pPnuZGKWE/2B4GXT1A==}
     engines: {node: '>=20.0.0'}
 
-  '@supabase/postgrest-js@2.93.1':
-    resolution: {integrity: sha512-uRKKQJBDnfi6XFNFPNMh9+u3HT2PCgp065PcMPmG7e0xGuqvLtN89QxO2/SZcGbw2y1+mNBz0yUs5KmyNqF2fA==}
+  '@supabase/postgrest-js@2.93.2':
+    resolution: {integrity: sha512-W2AWDsYwRT217II5yD3jWaX3fJjB7DwyNi2KNi4sphdUI3DKY4fP2XYVDGfeb1clEFL18gw+GBhyQb3BcpNWkw==}
     engines: {node: '>=20.0.0'}
 
-  '@supabase/realtime-js@2.93.1':
-    resolution: {integrity: sha512-2WaP/KVHPlQDjWM6qe4wOZz6zSRGaXw1lfXf4thbfvk3C3zPPKqXRyspyYnk3IhphyxSsJ2hQ/cXNOz48008tg==}
+  '@supabase/realtime-js@2.93.2':
+    resolution: {integrity: sha512-YpAmJn7DLbMeYfQilcf3f0DKoY8O8TRbTF2oRpWFzHXTlEA+YWms8fBqM13Mf7RE72ouSNKDYyf5K2pWRSHvFw==}
     engines: {node: '>=20.0.0'}
 
   '@supabase/ssr@0.8.0':
@@ -316,12 +316,12 @@ packages:
     peerDependencies:
       '@supabase/supabase-js': ^2.76.1
 
-  '@supabase/storage-js@2.93.1':
-    resolution: {integrity: sha512-3KVwd4S1i1BVPL6KIywe5rnruNQXSkLyvrdiJmwnqwbCcDujQumARdGWBPesqCjOPKEU2M9ORWKAsn+2iLzquA==}
+  '@supabase/storage-js@2.93.2':
+    resolution: {integrity: sha512-abRSVClfIQn+SqpdqL7S7b3VeyS8270/o0gqmGFtiidb7Lu0COsIV6Mor/mK9xE99KYWzyd37vwYYwv/jaANhw==}
     engines: {node: '>=20.0.0'}
 
-  '@supabase/supabase-js@2.93.1':
-    resolution: {integrity: sha512-FJTgS5s0xEgRQ3u7gMuzGObwf3jA4O5Ki/DgCDXx94w1pihLM4/WG3XFa4BaCJYfuzLxLcv6zPPA5tDvBUjAUg==}
+  '@supabase/supabase-js@2.93.2':
+    resolution: {integrity: sha512-G3bZZi6rPwXcPtyHLXQTeHKa5ADZ2UW/+hv8YhwZFwngz4TlPnR4+TeO37EwU5+d/reD02qXozOZgz+QHv1Jtg==}
     engines: {node: '>=20.0.0'}
 
   '@swc/helpers@0.5.15':
@@ -624,10 +624,10 @@ packages:
   queue-microtask@1.2.3:
     resolution: {integrity: sha512-NuaNSa6flKT5JaSYQzJok04JzTL1CA6aGhv5rfLW3PgqA+M2ChpZQnAC8h8i4ZFkBS8X5RqkDBHA7r4hej3K9A==}
 
-  react-dom@19.2.3:
-    resolution: {integrity: sha512-yELu4WmLPw5Mr/lmeEpox5rw3RETacE++JgHqQzd2dg+YbJuat3jH4ingc+WPZhxaoFzdv9y33G+F7Nl5O0GBg==}
+  react-dom@19.2.4:
+    resolution: {integrity: sha512-AXJdLo8kgMbimY95O2aKQqsz2iWi9jMgKJhRBAxECE4IFxfcazB2LmzloIoibJI3C12IlY20+KFaLv+71bUJeQ==}
     peerDependencies:
-      react: ^19.2.3
+      react: ^19.2.4
 
   react-fast-compare@3.2.2:
     resolution: {integrity: sha512-nsO+KSNgo1SbJqJEYRE9ERzo7YtYbou/OqjSQKxV7jcKox7+usiUVZOAC+XnDOABXggQTno0Y1CpVnuWEc1boQ==}
@@ -920,24 +920,24 @@ snapshots:
       '@nodelib/fs.scandir': 2.1.5
       fastq: 1.19.1
 
-  '@supabase/auth-helpers-nextjs@0.15.0(@supabase/supabase-js@2.93.1)':
+  '@supabase/auth-helpers-nextjs@0.15.0(@supabase/supabase-js@2.93.2)':
     dependencies:
-      '@supabase/supabase-js': 2.93.1
+      '@supabase/supabase-js': 2.93.2
       cookie: 1.1.1
 
-  '@supabase/auth-js@2.93.1':
+  '@supabase/auth-js@2.93.2':
     dependencies:
       tslib: 2.8.1
 
-  '@supabase/functions-js@2.93.1':
+  '@supabase/functions-js@2.93.2':
     dependencies:
       tslib: 2.8.1
 
-  '@supabase/postgrest-js@2.93.1':
+  '@supabase/postgrest-js@2.93.2':
     dependencies:
       tslib: 2.8.1
 
-  '@supabase/realtime-js@2.93.1':
+  '@supabase/realtime-js@2.93.2':
     dependencies:
       '@types/phoenix': 1.6.7
       '@types/ws': 8.18.1
@@ -947,23 +947,23 @@ snapshots:
       - bufferutil
       - utf-8-validate
 
-  '@supabase/ssr@0.8.0(@supabase/supabase-js@2.93.1)':
+  '@supabase/ssr@0.8.0(@supabase/supabase-js@2.93.2)':
     dependencies:
-      '@supabase/supabase-js': 2.93.1
+      '@supabase/supabase-js': 2.93.2
       cookie: 1.1.1
 
-  '@supabase/storage-js@2.93.1':
+  '@supabase/storage-js@2.93.2':
     dependencies:
       iceberg-js: 0.8.1
       tslib: 2.8.1
 
-  '@supabase/supabase-js@2.93.1':
+  '@supabase/supabase-js@2.93.2':
     dependencies:
-      '@supabase/auth-js': 2.93.1
-      '@supabase/functions-js': 2.93.1
-      '@supabase/postgrest-js': 2.93.1
-      '@supabase/realtime-js': 2.93.1
-      '@supabase/storage-js': 2.93.1
+      '@supabase/auth-js': 2.93.2
+      '@supabase/functions-js': 2.93.2
+      '@supabase/postgrest-js': 2.93.2
+      '@supabase/realtime-js': 2.93.2
+      '@supabase/storage-js': 2.93.2
     transitivePeerDependencies:
       - bufferutil
       - utf-8-validate
@@ -1125,12 +1125,12 @@ snapshots:
 
   nanoid@3.3.11: {}
 
-  next-themes@0.4.6(react-dom@19.2.3(react@19.2.4))(react@19.2.4):
+  next-themes@0.4.6(react-dom@19.2.4(react@19.2.4))(react@19.2.4):
     dependencies:
       react: 19.2.4
-      react-dom: 19.2.3(react@19.2.4)
+      react-dom: 19.2.4(react@19.2.4)
 
-  next@16.1.5(react-dom@19.2.3(react@19.2.4))(react@19.2.4):
+  next@16.1.5(react-dom@19.2.4(react@19.2.4))(react@19.2.4):
     dependencies:
       '@next/env': 16.1.5
       '@swc/helpers': 0.5.15
@@ -1138,7 +1138,7 @@ snapshots:
       caniuse-lite: 1.0.30001766
       postcss: 8.4.31
       react: 19.2.4
-      react-dom: 19.2.3(react@19.2.4)
+      react-dom: 19.2.4(react@19.2.4)
       styled-jsx: 5.1.6(react@19.2.4)
     optionalDependencies:
       '@next/swc-darwin-arm64': 16.1.5
@@ -1218,17 +1218,17 @@ snapshots:
 
   queue-microtask@1.2.3: {}
 
-  react-dom@19.2.3(react@19.2.4):
+  react-dom@19.2.4(react@19.2.4):
     dependencies:
       react: 19.2.4
       scheduler: 0.27.0
 
   react-fast-compare@3.2.2: {}
 
-  react-snowfall@2.4.0(react-dom@19.2.3(react@19.2.4))(react@19.2.4):
+  react-snowfall@2.4.0(react-dom@19.2.4(react@19.2.4))(react@19.2.4):
     dependencies:
       react: 19.2.4
-      react-dom: 19.2.3(react@19.2.4)
+      react-dom: 19.2.4(react@19.2.4)
       react-fast-compare: 3.2.2
 
   react@19.2.4: {}
