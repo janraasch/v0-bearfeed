@@ -18,7 +18,7 @@
     "@supabase/ssr": "latest",
     "@supabase/supabase-js": "latest",
     "date-fns": "latest",
-    "linkify-react": "^4.3.2",
+    "linkify-react": "^4.3.3",
     "linkifyjs": "^4.3.3",
     "next": "16.2.6",
     "next-themes": "latest",
