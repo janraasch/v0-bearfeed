@@ -21,8 +21,8 @@ importers:
         specifier: latest
         version: 4.4.0
       linkify-react:
-        specifier: ^4.3.3
-        version: 4.3.3(linkifyjs@4.4.0)(react@19.3.1)
+        specifier: ^4.4.0
+        version: 4.4.0(linkifyjs@4.4.0)(react@19.3.1)
       linkifyjs:
         specifier: ^4.4.0
         version: 4.4.0
@@ -513,10 +513,10 @@ packages:
   lines-and-columns@1.2.4:
     resolution: {integrity: sha512-7ylylesZQ/PV29jhEDl3Ufjo6ZX7gCqJr5F7PKrqc93v7fzSymt1BpwEU8nAUXs8qzzvqhbjhK5QZg6Mt/HkBg==}
 
-  linkify-react@4.3.3:
-    resolution: {integrity: sha512-bMWuN1YJ3hyDyojk4hzUugecN2RsTuibKAQBplUT2o+3uK33THdRL2qD0Zf3ibCXuBLBCyOE6Uj/S/1cY48Ygw==}
+  linkify-react@4.4.0:
+    resolution: {integrity: sha512-7mST+yaoW15MujtQYTM7TtSEqTnnBw1TUBVO8mIgn1za0RZfEQdGDLe1avTlxP58LJ9/Bu1pFvbGyDJMz8QX2A==}
     peerDependencies:
-      linkifyjs: '==4.3.3'
+      linkifyjs: 4.4.0
       react: '>= 15.0.0'
 
   linkifyjs@4.4.0:
@@ -1114,7 +1114,7 @@ snapshots:
 
   lines-and-columns@1.2.4: {}
 
-  linkify-react@4.3.3(linkifyjs@4.4.0)(react@19.3.1):
+  linkify-react@4.4.0(linkifyjs@4.4.0)(react@19.3.1):
     dependencies:
       linkifyjs: 4.4.0
       react: 19.3.1
